@@ -1,0 +1,36 @@
+name: Autograding HTML5
+on:
+  push:
+    paths:
+      - '**.html'
+  pull_request:
+    paths:
+      - '**.html'
+  workflow_dispatch:
+  repository_dispatch:
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-html5:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar validador de HTML
+        run: npm install -g html-validator-cli
+
+      - name: Validar archivos HTML
+        run: |
+          find . -name "*.html" -print0 | xargs -0 -n1 html-validator --format=gnu
+
+      - name: Reportar resultados de autograding
+        run: echo "Validación HTML5 completada. Revisa los logs para ver los resultados."
