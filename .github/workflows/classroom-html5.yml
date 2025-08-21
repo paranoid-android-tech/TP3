@@ -1,0 +1,28 @@
+name: Validar HTML5
+
+on:
+  push:
+    paths:
+      - '**.html'
+  pull_request:
+    paths:
+      - '**.html'
+
+jobs:
+  html5-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar validador de HTML
+        run: npm install -g html-validator-cli
+
+      - name: Validar archivos HTML
+        run: |
+          find . -name "*.html" -print0 | xargs -0 -n1 html-validator --format=gnu
