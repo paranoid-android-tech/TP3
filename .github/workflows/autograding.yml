@@ -30,7 +30,7 @@ jobs:
 
       - name: Validar archivos HTML
         run: |
-          find . -name "*.html" -print0 | xargs -0 -n1 html-validator --format=gnu
+          find . -name "*.html" -print0 | xargs -0 -n1 -I {} sh -c 'html-validator --format=gnu --data="$(cat {})"'
 
       - name: Reportar resultados de autograding
         run: echo "Validación HTML5 completada. Revisa los logs para ver los resultados."
